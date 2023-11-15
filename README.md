@@ -20,50 +20,88 @@ Usually we can have key/value items nested in some way like the following:
 To avoid editors to edit JSON files directly, ofted in git repos, the idea is 
 to create/update online spreadsheet on Google Docs and maybe Microsoft Office 365.
 
-## How to
+## Installation
 
-This tool is intended to be used as CLI tool. Since the actual distribution of the 
-tool is only as Docker image the following examples show usage using directly the 
-cloned repo. We will update the examples as soon as we release in a different way.
+### PIP 
 
-To simplify the command syntax we can set main variable into the environment:
+The package is available on [Pypi](https://pypi.org/project/i18nconverter/). To install locally on a virtual env or globally execute a standard package installation: 
 
 ```bash
-❯ export SA_JSON_FILE=./somepath/mysa.json
-❯ export SPREADSHEET_URL=https://docs.google.com/spreadsheets/d/000009999900000999/
+❯ pip install i18nconverter
 ```
+
+## How to
+
+This tool is intended to be used as CLI tool. 
+
 
 ### Get Help
 
 ```bash
-❯ python main.py --help
-Usage: cli [OPTIONS] COMMAND [ARGS]...
+❯ i18nconverter --help
+Usage: i18nconverter [OPTIONS] COMMAND [ARGS]...
 
 Options:
   --auth TEXT  Service Account JSON file path
+  --silent     Silent mode: questions to user will be skipped (ignored for
+               setup)
   --help       Show this message and exit.
 
 Commands:
+  setup
   togdoc
+  tojson
+  tokv
 ```
+
+### Create local permantent config file
+
+To simplify the frequent usage we support a local configuration file that will be searched *only in the current directory*.
+
+```bash
+ ❯ i18nconverter setup
+📝 Creating local configuration...
+↳ GCP Service Account JSON file location? : /tmp/my-sa-file.json
+↳ Google Spreadsheet link? : https://docs.google.com/spreadsheets/d/ffa9a9f99f
+↳ How do you manage locale codes?
+   ↳ [1] in different files
+   ↳ [2] on the first level of JSON
+ [1]: 1
+
+
+🎉  Configuration file created .i18nconverter.json
+```
+
+As you can see a file in the same directory called `.i18nconverter.json` will be created and you can skip setting SA file path and source/target spreadsheet link on each command.
 
 ### Json To Google Spreadsheet
 
 ```bash
-❯ python main.py togdoc --help
-Usage: cli togdoc [OPTIONS]
+❯ i18nconverter togdoc --help
+Usage: i18nconverter togdoc [OPTIONS]
 
 Options:
-  -i, --infile TEXT    JSON input file
-  -ol, --outlink TEXT  Destination link for Google Spreadsheet
-  -oi, --outid TEXT    Destination ID for Google Spreadsheet
-  -s, --sheet TEXT     Destination sheet in Google Spreadsheet
-  --help               Show this message and exit.
+  -i, --infile TEXT               JSON input file
+  -ol, --outlink TEXT             Destination link for Google Spreadsheet
+  -s, --sheet TEXT                Destination sheet in Google Spreadsheet
+  -o, --overwrite                 Clear worksheet before writing values
+  --create-sheet / --no-create-sheet
+                                  Create new sheet with given name if it not
+                                  exists
+  --help                          Show this message and exit.
 ```
 
-**Use case: update**. We have a JSON file and we need to update an existing Google Spreadsheet file.
+### Google Spreadsheet to Json file
 
 ```bash
-❯ python main.py --auth $SA_JSON_FILE togdoc \ -i /some/path/somefile-it.json -ol $SPREADSHEET_URL
+❯ i18nconverter tojson --help
+Usage: i18nconverter tojson [OPTIONS]
+
+Options:
+  -o, --outfile TEXT  JSON output file
+  -il, --inlink TEXT  Source link for Google Spreadsheet
+  --start-cell TEXT   Start reading from this cell coordinates
+  -s, --sheet TEXT    Source sheet in Google Spreadsheet
+  --help              Show this message and exit.
 ```
 

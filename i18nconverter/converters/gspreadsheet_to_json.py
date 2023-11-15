@@ -24,7 +24,7 @@ class GspreadToJson:
         try:
             sh = spreadsheet.worksheet(sheet)
         except WorksheetNotFound as e:
-            raise Exception()
+            raise Exception(f'Unable to find sheet {sheet}')
         
         self.sh = sh
 
@@ -62,28 +62,3 @@ class GspreadToJson:
                 
         with open(outfile, "w") as outfile:
             outfile.write(json_object)
-
-
-if __name__ == '__main__':
-    sa_file = os.getenv('SA_FILE')
-    gc = gspread.service_account(filename=sa_file)
-
-    sh = gc.open_by_url("https://docs.google.com/spreadsheets/d/99999999999/edit?usp=sharing").sheet1
-
-    values = sh.get_all_values()
-
-    dd = dict()
-
-    for row in values:
-        k = ''
-        v = ''
-
-        if len(row) < 1:
-            k = row[0]
-        if len(row) <= 2:
-            k = row[0]
-            v = row[1]
-
-        deep_insert(k, v.encode('utf-8').decode())
-
-    print(json.dumps(result, indent=2, ensure_ascii=False))

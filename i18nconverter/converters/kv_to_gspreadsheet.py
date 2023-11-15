@@ -27,19 +27,3 @@ class KvToGspread:
             sh.clear()
 
         sh.update(start_cell, kv)
-
-
-if __name__ == '__main__':
-    sa_file = os.getenv('SA_FILE')
-    spreadsheet_url = os.getenv('SPREADSHEET_URL')
-    
-    in_file = 'res/sample.json'
-    jkv = JsonToKv(from_file=in_file)        
-    sample_data = jkv.as_kvlist()
-
-    gc = gspread.service_account(filename=sa_file)
-
-    spreadsheet = gc.open_by_url(spreadsheet_url)
-    sh = spreadsheet.worksheet("sheet1")
-
-    sh.update('A1', sample_data)
