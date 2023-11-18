@@ -38,10 +38,8 @@ class JsonToKv:
 
         return kvlist
 
-if __name__ == '__main__':
-    in_file = 'res/sample.json'
+    def get_keys(self):
+        kvlist = self.as_kvlist()
+        keys = [_[0] for _ in kvlist]
 
-    jkv = JsonToKv(from_file=in_file)    
-    
-    print(jkv.as_kvlist())
-    
+        return keys

@@ -48,7 +48,7 @@ Options:
   --help       Show this message and exit.
 
 Commands:
-  setup
+  init
   togdoc
   tojson
   tokv
@@ -59,7 +59,7 @@ Commands:
 To simplify the frequent usage we support a local configuration file that will be searched *only in the current directory*.
 
 ```bash
- ❯ i18nconverter setup
+ ❯ i18nconverter init
 📝 Creating local configuration...
 ↳ GCP Service Account JSON file location? : /tmp/my-sa-file.json
 ↳ Google Spreadsheet link? : https://docs.google.com/spreadsheets/d/ffa9a9f99f
@@ -105,3 +105,26 @@ Options:
   --help              Show this message and exit.
 ```
 
+### Compare Json file and Google Spreadsheet
+
+```bash
+❯ i18nconverter compare --help
+Usage: i18nconverter compare [OPTIONS]
+
+Options:
+  -f, --file TEXT       JSON file for comparison  [required]
+  -l, --link TEXT       Link to Google Spreadsheet
+  -s, --sheet TEXT      Source sheet in Google Spreadsheet
+  -c, --column INTEGER  Colum to read in Google Spreadsheet
+  --help                Show this message and exit.
+```
+
+The response will show two csv with differences:
+
+```bash
+❯ i18nconverter compare -f /tmp/somefile.json
+Keys present in Google Spreadsheet and not present in JSON: 
+actions.addedaaa
+Keys present in JSON and not present in Google Spreadsheet: 
+actions.added
+```
