@@ -30,12 +30,64 @@ The package is available on [Pypi](https://pypi.org/project/i18nconverter/). To 
 ❯ pip install i18nconverter
 ```
 
+## Quickstart
+
+1. Move to your current project directory and configure the environment
+
+```bash
+❯ i18nconverter init
+📝 Creating local configuration...
+↳ GCP Service Account JSON file location? : /tmp/my-sa-file.json
+↳ Google Spreadsheet link? : NA
+↳ How do you manage locale codes?
+   ↳ [1] in different files
+   ↳ [2] on the first level of JSON
+ [1]:
+
+🎉  Configuration file created .i18nconverter.json 
+```
+
+Since we're going to create a new file we can insert a random string to _Google Spreadsheet link?_ question.
+
+2. Then we can create the new spreadsheet where manage translations
+
+```bash
+❯ i18nconverter create --name "MY_PROJECT_Translations" --owner "john.doe@none.com" --save
+📝 Creating new spreadsheet "MY_PROJECT_Translations"...
+https://docs.google.com/spreadsheets/d/99999-8
+✅ Config file updated.
+```
+
+3. Create entries to the previously created Google Spreadsheet for italian using dedicated sheet named `it-IT`. 
+
+```bash
+ ❯ i18nconverter togdoc -i public/locales/it-IT/translation.json --sheet IT --create-sheet
+✅ Update completed.
+💻 Check at https://docs.google.com/spreadsheets/d/99999-8
+```
+
+Then repeat for `en-US` locale.
+
+```bash
+❯ i18nconverter togdoc -i public/locales/en-US/translation.json --sheet en-US --create-sheet
+✅ Update completed.
+💻 Check at https://docs.google.com/spreadsheets/d/99999-8
+```
+
+4. Fill some translations on Google Docs
+5. Update local JSON file 
+
+```bash
+❯ i18nconverter tojson -o public/locales/it-IT/translation.json -s it-IT
+```
+
+6. Check differences locally maybe with the help of `git diff`
+
 ## How to
 
 This tool is intended to be used as CLI tool. 
 
-
-### Get Help
+### Get help
 
 ```bash
 ❯ i18nconverter --help
