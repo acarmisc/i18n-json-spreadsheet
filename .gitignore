@@ -160,3 +160,6 @@ cython_debug/
 #.idea/
 
 sonic-silo-399617-f038091229b3.json
+
+.i18nconverter.json
+.idea/
