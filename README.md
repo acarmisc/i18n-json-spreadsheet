@@ -30,6 +30,15 @@ The package is available on [Pypi](https://pypi.org/project/i18nconverter/). To 
 ❯ pip install i18nconverter
 ```
 
+## Authentication
+
+At the moment we support only Service Account file to authenticate API for Google Drive and Google Spreadsheet. To get you SA file you have to:
+
+- Visit [Google Developers Console](https://console.developers.google.com/) to create a new project
+- In the input box "Search for APIs and Services" search for _Google Drive API_ and check it.
+- Repeat for _Google Sheets API_
+- Create and download the key file following https://cloud.google.com/iam/docs/keys-create-delete 
+
 ## Quickstart
 
 1. Move to your current project directory and configure the environment
