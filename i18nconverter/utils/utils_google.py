@@ -14,7 +14,7 @@ def compare_json_gdoc(sa_file: str, json_file: str, link_file: str, column: int,
     class Diff():
         pass
 
-    from i18nconverter.converters.json_to_kv import JsonToKv
+    from i18nconverter.utils.json_to_kv import JsonToKv
 
     diff = Diff()
     gc = gspread.service_account(filename=sa_file)

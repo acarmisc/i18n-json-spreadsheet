@@ -1,13 +1,12 @@
-import os
 import gspread
+import json
 from gspread.exceptions import WorksheetNotFound
 
 from collections import defaultdict
 
+
 def deep_dict():
     return defaultdict(deep_dict)
-
-import json
 
 
 class GspreadToJson:
@@ -25,7 +24,7 @@ class GspreadToJson:
             sh = spreadsheet.worksheet(sheet)
         except WorksheetNotFound as e:
             raise Exception(f'Unable to find sheet {sheet}')
-        
+
         self.sh = sh
 
     def read(self):
@@ -45,7 +44,7 @@ class GspreadToJson:
         for row in values:
             k = ''
             v = ''
-            
+
             if len(row) < 1:
                 k = row[0]
             if len(row) <= 2:
@@ -57,8 +56,8 @@ class GspreadToJson:
         return result
 
     def to_file(self, outfile: str):
-        
+
         json_object = json.dumps(self.read(), indent=2)
-                
+
         with open(outfile, "w") as outfile:
             outfile.write(json_object)

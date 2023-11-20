@@ -1,10 +1,11 @@
 import json
 
+
 class JsonToKv:
 
     def __init__(self, from_file: str = None, from_dict: dict = None) -> None:
         self.data = None
-        if from_file: 
+        if from_file:
             self.data = self.dict_from_file(from_file)
         if from_dict:
             self.data = from_dict
@@ -14,7 +15,7 @@ class JsonToKv:
     @staticmethod
     def dict_from_file(from_file: str):
         f = open(from_file)
-        data = json.load(f)    
+        data = json.load(f)
 
         return data
 
@@ -30,7 +31,7 @@ class JsonToKv:
             else:
                 ret[k] = v
         return ret
-    
+
     def as_kvlist(self):
         kvlist = []
         for k, v in self.flatten_json().items():

@@ -1,10 +1,8 @@
-import sys
-
 import click
 import os
 import json
 
-from i18nconverter.utils_google import compare_json_gdoc
+from i18nconverter.utils.utils_google import compare_json_gdoc
 
 CONFIG_FILE_NAME = '.i18nconverter.json'
 
@@ -27,6 +25,11 @@ def cli(ctx, auth, silent):
 
 @cli.command()
 def init():
+    """
+    Scaffold initial configuration file to simplify frequent usage of the tool
+    in the same project. The command will ask you some question and the answers
+    will be saved in a local file named `.i18nconverter.json`
+    """
     click.echo('📝 Creating local configuration...')
     if os.path.exists(CONFIG_FILE_NAME):
         click.echo(f' ↳ ⚠️ local configuration file present in {CONFIG_FILE_NAME}')
@@ -62,7 +65,7 @@ def create(ctx, name: str, owner: str, save: bool):
     the Google Drive API.
     """
     click.echo(f'📝 Creating new spreadsheet "{name}"...')
-    from i18nconverter.utils_google import create_spreadsheet
+    from i18nconverter.utils.utils_google import create_spreadsheet
 
     sh = create_spreadsheet(ctx.obj.get('auth'), name, owner)
     click.echo(sh.url)
@@ -89,8 +92,12 @@ def create(ctx, name: str, owner: str, save: bool):
 @click.option('--create-sheet/--no-create-sheet', 'create_sheet', default=False,
               help='Create new sheet with given name if it not exists')
 def togdoc(ctx, infile, outlink, overwrite, sheet, create_sheet):
-    from .converters.json_to_kv import JsonToKv
-    from .converters.kv_to_gspreadsheet import KvToGspread
+    """
+    Convert input JSON file to a given Google Spreadsheet in an existent sheet
+    or creating a new one at runtime.
+    """
+    from .utils.json_to_kv import JsonToKv
+    from .utils.kv_to_gspreadsheet import KvToGspread
 
     if not outlink and ctx.obj['wsh_url']:
         outlink = ctx.obj['wsh_url']
@@ -116,7 +123,10 @@ def togdoc(ctx, infile, outlink, overwrite, sheet, create_sheet):
 @click.option('--start-cell', 'startcell', default='A1', help='Start reading from this cell coordinates')
 @click.option('-s', '--sheet', 'sheet', default='Sheet1', help='Source sheet in Google Spreadsheet')
 def tojson(ctx, inlink, outfile, sheet, startcell):
-    from .converters.gspreadsheet_to_json import GspreadToJson
+    """
+    Get translations from Google Spreadsheet and save them to a given JSON file
+    """
+    from .utils.gspreadsheet_to_json import GspreadToJson
 
     if not inlink and ctx.obj['wsh_url']:
         inlink = ctx.obj['wsh_url']
@@ -135,6 +145,11 @@ def tojson(ctx, inlink, outfile, sheet, startcell):
 @click.option('-s', '--sheet', 'sheet', default='Sheet1', help='Source sheet in Google Spreadsheet')
 @click.option('-c', '--column', 'column', default=1, type=int, help='Colum to read in Google Spreadsheet')
 def compare(ctx, json_file: str, link_file: str, column: int, sheet: str):
+    """
+    Compare JSON and Google Spreadsheet differences.
+    This feature is not stable.
+    """
+    click.echo(f'☢️ This feature is not stable! ')
     if not link_file and ctx.obj['wsh_url']:
         link_file = ctx.obj['wsh_url']
 
