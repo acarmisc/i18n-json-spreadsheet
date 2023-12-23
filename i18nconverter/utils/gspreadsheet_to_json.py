@@ -27,6 +27,15 @@ class GspreadToJson:
 
         self.sh = sh
 
+    def read_flat(self):
+        values = self.sh.get_all_values()
+        dd = dict()
+
+        for r in self.sh.get_all_values():
+            dd[r[0]] = r[1]
+
+        return dd
+
     def read(self):
         result = deep_dict()
 

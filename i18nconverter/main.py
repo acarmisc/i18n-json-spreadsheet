@@ -1,6 +1,7 @@
-import click
-import os
 import json
+import os
+
+import click
 
 from i18nconverter.utils.utils_google import compare_json_gdoc
 
@@ -87,16 +88,18 @@ def create(ctx, name: str, owner: str, save: bool):
 @click.option('-i', '--infile', 'infile', help='JSON input file')
 @click.option('-ol', '--outlink', 'outlink', default=None, help='Destination link for Google Spreadsheet')
 @click.option('-s', '--sheet', 'sheet', default='Sheet1', help='Destination sheet in Google Spreadsheet')
-@click.option('-o', '--overwrite', 'overwrite', is_flag=True, show_default=True, default=False,
+@click.option('--overwrite/--no-overwrite', 'overwrite', is_flag=True, show_default=True, default=False,
               help='Clear worksheet before writing values')
+@click.option('--merge/--no-merge', 'merge', is_flag=True, default=False,
+              help='Merge keys without replacing whole file')
 @click.option('--create-sheet/--no-create-sheet', 'create_sheet', default=False,
               help='Create new sheet with given name if it not exists')
-def togdoc(ctx, infile, outlink, overwrite, sheet, create_sheet):
+def togdoc(ctx, infile, outlink, overwrite, merge, sheet, create_sheet):
     """
     Convert input JSON file to a given Google Spreadsheet in an existent sheet
     or creating a new one at runtime.
     """
-    from .utils.json_to_kv import JsonToKv
+
     from .utils.kv_to_gspreadsheet import KvToGspread
 
     if not outlink and ctx.obj['wsh_url']:
@@ -108,10 +111,10 @@ def togdoc(ctx, infile, outlink, overwrite, sheet, create_sheet):
             click.echo('Aborted.')
             exit(0)
 
-    jkv = JsonToKv(from_file=infile)
     kvgs = KvToGspread(sa_file=ctx.obj.get('auth'))
 
-    kvgs.update_spreadsheet(jkv.as_kvlist(), outlink, sheet=sheet, create_sheet=create_sheet, overwrite=overwrite)
+    kvgs.update_spreadsheet(infile, outlink, sheet=sheet, create_sheet=create_sheet, overwrite=overwrite,
+                            merge=merge)
 
     click.echo(f'✅ Update completed. \n💻 Check at {outlink}')
 
