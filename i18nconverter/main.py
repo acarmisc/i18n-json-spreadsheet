@@ -102,7 +102,7 @@ def togdoc(ctx, infile, outlink, overwrite, merge, sheet, create_sheet):
 
     from .utils.kv_to_gspreadsheet import KvToGspread
 
-    if not outlink and ctx.obj['wsh_url']:
+    if not outlink and ctx.obj.get('wsh_url'):
         outlink = ctx.obj['wsh_url']
 
     if overwrite and not ctx.obj.get('silent'):

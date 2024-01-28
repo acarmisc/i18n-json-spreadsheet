@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "i18nconverter"
-version = "0.0.3"
+version = "0.0.4"
 description = "A CLI application for managing i18n Json files."
 readme = "README.md"
 authors = [{ name = "Andrea Carmisciano", email = "andrea.carmisciano@gmail.com" }]

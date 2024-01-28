@@ -68,5 +68,8 @@ class GspreadToJson:
 
         json_object = json.dumps(self.read(), indent=2)
 
-        with open(outfile, "w") as outfile:
-            outfile.write(json_object)
+        if outfile == '--':
+            print(json_object)
+        else:
+            with open(outfile, "w") as outfile:
+                outfile.write(json_object)
