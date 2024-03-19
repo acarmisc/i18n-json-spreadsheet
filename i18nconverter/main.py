@@ -129,7 +129,10 @@ def tojson(ctx, inlink, outfile, sheet, startcell):
     """
     Get translations from Google Spreadsheet and save them to a given JSON file
     """
-    from .utils.gspreadsheet_to_json import GspreadToJson
+    try:
+        from .utils.gspreadsheet_to_json import GspreadToJson
+    except Exception:
+        from utils.gspreadsheet_to_json import GspreadToJson
 
     if not inlink and ctx.obj['wsh_url']:
         inlink = ctx.obj['wsh_url']
