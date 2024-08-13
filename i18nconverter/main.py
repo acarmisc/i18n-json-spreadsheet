@@ -57,9 +57,10 @@ def init():
 @click.pass_context
 @click.option('--name', 'name', required=True, help='The name for the new spreadsheet')
 @click.option('--owner', 'owner', required=True, help='Your e-mail address in order to access the file')
+@click.option('--sa', 'sa_file', required=True, help='Path to your Service Account file')
 @click.option('--save/--no-save', 'save', default=False, is_flag=True, show_default=True,
               help='Update local configuration, if present, with the new file url')
-def create(ctx, name: str, owner: str, save: bool):
+def create(ctx, name: str, owner: str, sa_file: str, save: bool):
     """
     Creating new files require you to enable Google Drive API for Service Account.
     You may encounter an error during create but with the link to enable directly
@@ -67,6 +68,9 @@ def create(ctx, name: str, owner: str, save: bool):
     """
     click.echo(f'📝 Creating new spreadsheet "{name}"...')
     from i18nconverter.utils.utils_google import create_spreadsheet
+
+    if not ctx.obj.get('auth'):
+        ctx.obj['auth'] = sa_file
 
     sh = create_spreadsheet(ctx.obj.get('auth'), name, owner)
     click.echo(sh.url)

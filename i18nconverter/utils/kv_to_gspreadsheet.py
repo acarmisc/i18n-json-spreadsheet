@@ -37,4 +37,4 @@ class KvToGspread:
         to_write = flat_json | existing
 
         jkv = JsonToKv(from_dict=to_write)
-        sh.update(start_cell, jkv.as_kvlist())
+        sh.update(start_cell, jkv.as_kvlist(), value_input_option='USER_ENTERED')
